@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Schibsted+Grotesk:wght@600;800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Schibsted Grotesk", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --bg-primary: #08080a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+  }
+
+  body {
+    @apply min-h-screen overflow-x-hidden antialiased;
+    background-color: var(--bg-primary);
+    font-family: var(--font-sans);
+  }
+
+  #root {
+    @apply w-full min-h-full;
+  }
+
+  button, a {
+    @apply transition-colors duration-200;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* --- Animaciones de Ambiente --- */
+
+@keyframes flower-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-4deg); }
+  35% { transform: translate3d(12px, -18px, 0) rotate(2deg); }
+  72% { transform: translate3d(-8px, 9px, 0) rotate(-1deg); }
+}
+
+@keyframes flower-float-reverse {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(5deg); }
+  42% { transform: translate3d(-14px, -12px, 0) rotate(-2deg); }
+  76% { transform: translate3d(8px, 10px, 0) rotate(3deg); }
+}
+
+.flower-drift-a { animation: flower-float 9.5s ease-in-out infinite; }
+.flower-drift-b { animation: flower-float-reverse 11.75s ease-in-out infinite; }
+.flower-drift-c { animation: flower-float 10.25s ease-in-out infinite; }
+.flower-drift-d { animation: flower-float 13s ease-in-out infinite reverse; }
+.flower-drift-e { animation: flower-float-reverse 14.5s ease-in-out infinite reverse; }
+.flower-drift-f { animation: flower-float 12.25s ease-in-out infinite reverse; }
+
+/* --- Stage Motion Component --- */
+
+.ui-stages-motion {
+  --canvas-left: max(0px, calc((100vw - 720px) / 2));
+  --stage-scale: min(1, calc(100vw / 720));
+  @apply relative w-full h-[500px] overflow-hidden isolate;
+}
+
+.ui-stages-motion::after {
+  @apply absolute inset-0 z-10 pointer-events-none content-[""];
+  background:
+    linear-gradient(180deg, rgba(8, 8, 10, 0.06), transparent 18%),
+    linear-gradient(0deg, rgba(8, 8, 10, 0.22), transparent 24%);
+}
+
+.ui-stages-motion [data-node-id="1:1326"],
+.ui-stages-motion [data-node-id="1:1328"] {
+  left: var(--canvas-left);
+  zoom: var(--stage-scale);
+}
+
+.ui-stages-motion [data-node-id="1:1328"] {
+  animation: stage-list 12.05s linear infinite;
+  will-change: transform;
+}
+
+.ui-stages-motion [data-node-id="1:1328"] > div {
+  animation: stage-row 12.05s ease-in-out infinite;
+  animation-delay: calc(var(--stage-index) * 0.75s);
+  will-change: opacity;
+}
+
+/* Loop para índices de stage (Soporte para hasta 12 elementos) */
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(1) { --stage-index: 0; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(2) { --stage-index: 1; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(3) { --stage-index: 2; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(4) { --stage-index: 3; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(5) { --stage-index: 4; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(6) { --stage-index: 5; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(7) { --stage-index: 6; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(8) { --stage-index: 7; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(9) { --stage-index: 8; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(10) { --stage-index: 9; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(11) { --stage-index: 10; }
+.ui-stages-motion [data-node-id="1:1328"] > div:nth-child(12) { --stage-index: 11; }
+
+@keyframes stage-list {
+  0%, 2.9% { transform: translateY(0); }
+  6.22%, 9.13% { transform: translateY(-95px); }
+  12.45%, 15.35% { transform: translateY(-190px); }
+  18.67%, 21.58% { transform: translateY(-285px); }
+  24.9%, 27.8% { transform: translateY(-380px); }
+  31.12%, 34.02% { transform: translateY(-475px); }
+  37.34%, 40.25% { transform: translateY(-570px); }
+  43.57%, 46.47% { transform: translateY(-665px); }
+  49.79%, 52.7% { transform: translateY(-760px); }
+  56.02%, 58.92% { transform: translateY(-855px); }
+  62.24%, 65.15% { transform: translateY(-950px); }
+  68.46%, 70.12% { transform: translateY(-1045px); }
+  74.27% { transform: translateY(0); }
+  78.99%, 79% { transform: translateY(-1520px); }
+  90.04%, 100% { transform: translateY(0); }
+}
+
+@keyframes stage-row {
+  0%, 3% { opacity: 1; }
+  6.2%, 9% { opacity: 0.28; }
+  12.4%, 15.3% { opacity: 0.15; }
+  18.6%, 21.5% { opacity: 0.07; }
+  24.8%, 72% { opacity: 0; }
+  74% { opacity: 0.1; }
+  77%, 100% { opacity: 0; }
+}
+
+@keyframes stage-zoom {
+  0%, 74.2% { opacity: 0; transform: translate(-17px, 0) scale(0.2); }
+  77.2%, 83.8% { opacity: 1; transform: translate(-87px, -2px) scale(1); }
+  89.6% { opacity: 1; transform: translate(0, 0) scale(14); }
+  90.9%, 100% { opacity: 0; transform: translate(0, 0) scale(260); }
+}
+
+/* --- Animaciones Procedurales Cyberpunk --- */
+
+@keyframes data-flow {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes network-pulse {
+  0%, 100% { opacity: 0.3; stroke-width: 1; }
+  50% { opacity: 0.7; stroke-width: 1.5; }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes digital-drift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-1%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3)); }
+  50% { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); }
+}
+
+.animate-data-flow {
+  stroke-dasharray: 10 5;
+  animation: data-flow 20s linear infinite;
+}
+
+.animate-network-pulse {
+  animation: network-pulse 4s ease-in-out infinite;
+}
+
+.animate-scan {
+  animation: scan-line 8s linear infinite;
+}
+
+.animate-drift {
+  animation: digital-drift 15s ease-in-out infinite;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
